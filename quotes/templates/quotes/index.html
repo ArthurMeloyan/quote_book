@@ -1,22 +1,42 @@
 {% extends 'quotes/base.html' %}
 
-{% block title %} Случайная цитата {% endblock %}
-
 {% block content %}
-    <h2>Случайная цитата</h2>
-    <p>Просмотров страницы: {{page_views}} </p>
-    {% if quote %}
-        <blockquote>
-            <p style="font-size: 20px;"> "{{ quote.text }}" </p>
-            <footer>— {{ quote.source }}</footer>
-        </blockquote>
-        <p>
-            Просмотров этой цитаты: {{ quote.views }} |
-            Лайки: {{ quote.likes }} |
-            Дизлайки: {{ quote.dislikes }}
-        </p>
+    <div class="container mt-4">
+        <h2 class="mb-3">Случайная цитата</h2>
+        <p>Просмотров страницы: {{ page_views }}</p>
 
-    {% else %}
-        <p>В базе нет ни одной цитаты. <a href=""> Добавьте первую!</a></p>
-    {% endif %}
+        {% if quote %}
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"{{ quote.text }}"</p>
+                        <footer class="blockquote-footer">{{ quote.source }}</footer>
+                    </blockquote>
+                </div>
+            </div>
+
+            <p class="mt-3">
+                Просмотров этой цитаты: <span class="badge bg-secondary">{{ quote.views }}</span> |
+                Лайки: <span class="badge bg-success">{{ quote.likes }}</span> |
+                Дизлайки: <span class="badge bg-danger">{{ quote.dislikes }}</span>
+            </p>
+            <div style="margin-top: 20px;">  <!-- Небольшой отступ сверху -->
+                <form action="{% url 'like_quote' quote.id %}" method="post" style="display: inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn like-btn">👍 Лайк</button>
+                </form>
+
+                <form action="{% url 'dislike_quote' quote.id %}" method="post" style="display: inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn dislike-btn">👎 Дизлайк</button>
+                </form>
+            </div>
+            
+
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                В базе пока нет ни одной цитаты. <a href="#" class="alert-link">Добавьте первую!</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

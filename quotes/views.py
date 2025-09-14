@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Quote
 import random
 # Create your views here.
@@ -41,3 +41,18 @@ def random_quote_view(request):
     }
 
     return render(request, 'quotes/index.html', context)
+
+
+def like(request, quote_id):
+    quote = get_object_or_404(Quote, pk=quote_id)
+    quote.likes += 1
+    quote.save(update_fields=['likes'])
+
+    return redirect('random_quote')
+
+def dislike(request, quote_id):
+    quote = get_object_or_404(Quote, pk=quote_id)
+    quote.dislikes += 1
+    quote.save(update_fields=['dislikes'])
+
+    return redirect('random_quote')
