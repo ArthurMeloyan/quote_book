@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Quote
 import random
+from .forms import QuoteForm
 # Create your views here.
 
 page_views = 0  # views counter
@@ -56,3 +57,20 @@ def dislike(request, quote_id):
     quote.save(update_fields=['dislikes'])
 
     return redirect('random_quote')
+
+
+def add_quote_view(request):
+    if request.method == 'POST':
+        form = QuoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('random_quote')
+    else:
+        form = QuoteForm()
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'quotes/create.html', context)

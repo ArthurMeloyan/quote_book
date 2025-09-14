@@ -69,32 +69,25 @@ blockquote footer {
     color: #aaa;
 }
 
-.btn {
-    display: inline-block;
-    font-weight: 400;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    border: 1px solid transparent;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: .25rem;
-    transition: color .15s 
-                ease-in-out, background-color .15s 
-                ease-in-out, border-color .15s 
-                ease-in-out, box-shadow .15s 
-                ease-in-out;
+.main-content form input,
+.main-content form textarea {
+    width: 100%;
+    max-width: 600px; 
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #2d2d2d;
+    border: 1px solid #444;
+    color: #f0f0f0;
+    border-radius: 4px;
 }
 
-.like-btn {
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
+
+.main-content form textarea {
+    height: 150px;
+    resize: vertical; 
 }
 
-.dislike-btn {
-    color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
+.main-content form label {
+    display: block;
+    margin-bottom: 5px;
 }
