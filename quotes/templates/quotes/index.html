@@ -1,0 +1,22 @@
+{% extends 'quotes/base.html' %}
+
+{% block title %} Случайная цитата {% endblock %}
+
+{% block content %}
+    <h2>Случайная цитата</h2>
+    <p>Просмотров страницы: {{page_views}} </p>
+    {% if quote %}
+        <blockquote>
+            <p style="font-size: 20px;"> "{{ quote.text }}" </p>
+            <footer>— {{ quote.source }}</footer>
+        </blockquote>
+        <p>
+            Просмотров этой цитаты: {{ quote.views }} |
+            Лайки: {{ quote.likes }} |
+            Дизлайки: {{ quote.dislikes }}
+        </p>
+
+    {% else %}
+        <p>В базе нет ни одной цитаты. <a href=""> Добавьте первую!</a></p>
+    {% endif %}
+{% endblock %}
