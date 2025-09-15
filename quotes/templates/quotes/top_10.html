@@ -3,8 +3,27 @@
 
 {% block content %}
     <div>
-        <h2>Топ-10 цитат по лайкам</h2>
+        <h2>{{ title|default:'Топ-10 цитат'}}</h2>
         <hr>
+        <div class="d-flex justify-content-start gap-2 my-4">
+            <a href="{% url 'top' %}?sort=likes"
+               class="btn {% if 'current_sort==likes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               По Лайкам
+            </a>
+            <a href="{% url 'top' %}?sort=dislikes"
+               class="btn {% if 'current_sort==dislikes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               По Дизлайкам
+            </a>
+            <a href="{% url 'top' %}?sort=views"
+               class="btn {% if 'current_sort==views' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               По просмотрам
+            </a>
+            <a href="{% url 'top' %}?sort=newest"
+               class="btn {% if 'current_sort==newest' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               По дате добавления
+            </a>
+        </div>
+
 
         <ol> 
         {% for quote in quotes %}
@@ -26,12 +45,12 @@
 
                 <div>
                     
-                    <form action="{% url 'like_quote' quote.id %}?next={{ request.path }}" method="post" style="display: inline-block;">
+                    <form action="{% url 'like_quote' quote.id %}?next={{ request.path }}?sort={{ current_sort}}" method="post" style="display: inline-block;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-success">👍 Лайк</button> 
                     </form>
 
-                    <form action="{% url 'dislike_quote' quote.id %}?next={{ request.path }}" method="post" style="display: inline-block;">
+                    <form action="{% url 'dislike_quote' quote.id %}?next={{ request.path }}?sort={{ current_sort}}" method="post" style="display: inline-block;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-danger">👎 Дизлайк</button>
                     </form>

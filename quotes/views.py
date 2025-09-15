@@ -83,9 +83,26 @@ def add_quote_view(request):
 
 # Function to view list of top 10 quotes
 def top_quotes_view(request):
-    quotes = Quote.objects.all().order_by('-likes')[:10]  # Get all quotes and choose first 10 by likes
+
+    sort_by = request.GET.get('sort', 'likes') # Get parameter for sort, if there is no so by default it's 'likes'
+    allowed_sort_params = {  # Allowed params for sorting
+        'likes': '-likes',
+        'dislikes': '-dislikes',
+        'views': '-views',
+        'newest': '-created_at'
+    }
+
+    translated = {
+        'likes': 'лайкам',
+        'dislikes': 'дизлайкам',
+        'views': 'просмотрам',
+        'newest': 'дате добавления'
+    }
+    order_param = allowed_sort_params.get(sort_by, '-likes')  # Choose parameter from allowed sorted, if there is no so by default it's '-likes'
+    quotes = Quote.objects.all().order_by(order_param)[:10]  # Get all quotes and choose first 10 by order parameter
     context = {
         'quotes': quotes,
-        'title': 'ТОП-10 цитат по лайкам'
+        'current_sort': sort_by,
+        'title': f'Топ-10 цитат по {translated[sort_by]}'
     }
     return render(request, 'quotes/top_10.html',context)
