@@ -43,28 +43,33 @@ def random_quote_view(request):
 
     return render(request, 'quotes/index.html', context)
 
-
+# Funtion for like logic 
 def like(request, quote_id):
-    quote = get_object_or_404(Quote, pk=quote_id)
-    quote.likes += 1
-    quote.save(update_fields=['likes'])
+    quote = get_object_or_404(Quote, pk=quote_id)  # get all quotes from db
+    quote.likes += 1  # Increment like
+    quote.save(update_fields=['likes'])  # Save new likes count
 
-    return redirect('random_quote')
+    next_page = request.GET.get('next', '/')  # Check if we on main page or on Top-10 page
 
+    return redirect(next_page)  # redirect to main page if we're on the main page, either stay on top-10
+
+# Function for dislike logic, same as for like 
 def dislike(request, quote_id):
     quote = get_object_or_404(Quote, pk=quote_id)
     quote.dislikes += 1
     quote.save(update_fields=['dislikes'])
 
-    return redirect('random_quote')
+    next_page = request.GET.get('next', '/')
 
+    return redirect(next_page)
 
+# Function for adding quote
 def add_quote_view(request):
-    if request.method == 'POST':
+    if request.method == 'POST':  # Check if request method is POST
         form = QuoteForm(request.POST)
-        if form.is_valid():
+        if form.is_valid():  # Check for valid request form
             form.save()
-            return redirect('random_quote')
+            return redirect('random_quote')  # After quote add redirect to main page
     else:
         form = QuoteForm()
 
@@ -74,3 +79,13 @@ def add_quote_view(request):
     }
 
     return render(request, 'quotes/create.html', context)
+
+
+# Function to view list of top 10 quotes
+def top_quotes_view(request):
+    quotes = Quote.objects.all().order_by('-likes')[:10]  # Get all quotes and choose first 10 by likes
+    context = {
+        'quotes': quotes,
+        'title': 'ТОП-10 цитат по лайкам'
+    }
+    return render(request, 'quotes/top_10.html',context)

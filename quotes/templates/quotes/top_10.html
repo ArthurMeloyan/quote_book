@@ -1,0 +1,50 @@
+{% extends 'quotes/base.html' %}
+{% block title %} ТОП-10 ЦИТАТ {% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Топ-10 цитат по лайкам</h2>
+        <hr>
+
+        <ol> 
+        {% for quote in quotes %}
+            <li style="margin-bottom: 30px;">
+                <div class="--card">
+                    <div class="--card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>"{{ quote.text }}"</p>
+                            <footer class="blockquote-footer">{{ quote.source }}</footer>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <p class="mt-2"> 
+                    Просмотров: <span class="badge bg-secondary">{{ quote.views }}</span> |
+                    Лайки: <span class="badge bg-success">{{ quote.likes }}</span> |
+                    Дизлайки: <span class="badge bg-danger">{{ quote.dislikes }}</span>
+                </p>
+
+                <div>
+                    
+                    <form action="{% url 'like_quote' quote.id %}?next={{ request.path }}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success">👍 Лайк</button> 
+                    </form>
+
+                    <form action="{% url 'dislike_quote' quote.id %}?next={{ request.path }}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">👎 Дизлайк</button>
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <div class="alert alert-info" role="alert">
+                В базе пока нет ни одной цитаты с лайками. 
+                <a href="{% url 'create_quote' %}" class="alert-link">Добавьте новую цитату</a> или 
+                <a href="{% url 'random_quote' %}" class="alert-link">проголосуйте за существующие</a>!
+            </div>
+        {% endfor %}
+        </ol>
+
+    </div>
+{% endblock %}
