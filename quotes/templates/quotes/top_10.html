@@ -7,19 +7,19 @@
         <hr>
         <div class="d-flex justify-content-start gap-2 my-4">
             <a href="{% url 'top' %}?sort=likes"
-               class="btn {% if 'current_sort==likes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               class="btn {% if current_sort == 'likes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
                По Лайкам
             </a>
             <a href="{% url 'top' %}?sort=dislikes"
-               class="btn {% if 'current_sort==dislikes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               class="btn {% if current_sort == 'dislikes' %} btn-primary {% else %} btn-outline-primary {% endif %}">
                По Дизлайкам
             </a>
             <a href="{% url 'top' %}?sort=views"
-               class="btn {% if 'current_sort==views' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               class="btn {% if current_sort == 'views' %} btn-primary {% else %} btn-outline-primary {% endif %}">
                По просмотрам
             </a>
             <a href="{% url 'top' %}?sort=newest"
-               class="btn {% if 'current_sort==newest' %} btn-primary {% else %} btn-outline-primary {% endif %}">
+               class="btn {% if current_sort == 'newest' %} btn-primary {% else %} btn-outline-primary {% endif %}">
                По дате добавления
             </a>
         </div>
